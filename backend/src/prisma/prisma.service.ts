@@ -12,17 +12,40 @@ export class PrismaService
   private static pool: Pool;
 
   constructor() {
-    const connectionString =
-      process.env.DATABASE_URL ||
-      'postgresql://postgres:postgres@localhost:5432/meudojo?schema=public';
+    const connectionString = process.env.DATABASE_URL;
 
-    const isLocalhost = connectionString.includes('localhost') || connectionString.includes('127.0.0.1');
+    // Falha explícita se a variável de ambiente não estiver configurada
+    if (!connectionString) {
+      throw new Error(
+        '[PrismaService] FATAL: DATABASE_URL não está definida. ' +
+          'Configure-a nas Environment Variables do Render.',
+      );
+    }
+
+    // Log do host para diagnóstico (sem expor senha)
+    try {
+      const url = new URL(connectionString);
+      console.log(
+        `[PrismaService] Conectando ao banco: ${url.hostname}:${url.port || 5432}`,
+      );
+    } catch {
+      console.log('[PrismaService] DATABASE_URL configurada (host não parseável)');
+    }
+
+    const isLocalhost =
+      connectionString.includes('localhost') ||
+      connectionString.includes('127.0.0.1');
+
     const ssl = isLocalhost ? false : { rejectUnauthorized: false };
 
-    const pool = new Pool({ 
+    const pool = new Pool({
       connectionString,
       ssl,
+      // Timeout maior para suportar cold-start do Neon (banco serverless)
+      connectionTimeoutMillis: 10000,
+      idleTimeoutMillis: 30000,
     });
+
     const adapter = new PrismaPg(pool);
 
     super({
