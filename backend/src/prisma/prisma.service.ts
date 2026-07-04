@@ -7,8 +7,7 @@ import { Pool } from 'pg';
 @Injectable()
 export class PrismaService
   extends PrismaClient
-  implements OnModuleInit, OnModuleDestroy
-{
+  implements OnModuleInit, OnModuleDestroy {
   private static pool: Pool;
 
   constructor() {
@@ -16,9 +15,10 @@ export class PrismaService
 
     // Falha explícita se a variável de ambiente não estiver configurada
     if (!connectionString) {
+      console.log(`[PrismaService] DATABASE_URL = ${connectionString}`);
       throw new Error(
         '[PrismaService] FATAL: DATABASE_URL não está definida. ' +
-          'Configure-a nas Environment Variables do Render.',
+        'Configure-a nas Environment Variables do Render.',
       );
     }
 
