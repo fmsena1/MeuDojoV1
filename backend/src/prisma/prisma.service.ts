@@ -22,15 +22,8 @@ export class PrismaService
       );
     }
 
-    // Log do host para diagnóstico (sem expor senha)
-    try {
-      const url = new URL(connectionString);
-      console.log(
-        `[PrismaService] Conectando ao banco: ${url.hostname}:${url.port || 5432}`,
-      );
-    } catch {
-      console.log('[PrismaService] DATABASE_URL configurada (host não parseável)');
-    }
+    // Log temporário de diagnóstico — REMOVER APÓS RESOLVER O PROBLEMA
+    console.log(`[PrismaService] DATABASE_URL = ${connectionString}`);
 
     const isLocalhost =
       connectionString.includes('localhost') ||
