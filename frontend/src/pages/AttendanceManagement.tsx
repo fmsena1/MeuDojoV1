@@ -13,6 +13,7 @@ import {
   ChevronRight,
   AlertCircle,
   MessageSquare,
+  UserPlus,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { RefreshButton } from '../components/RefreshButton';
@@ -35,6 +36,7 @@ interface AttendanceStudentRow {
   name: string;
   status: 'PRESENT' | 'ABSENT' | 'LATE' | 'JUSTIFIED' | null;
   notes: string | null;
+  isExtra?: boolean; // Identifica se é presença avulsa (sem matrícula)
 }
 
 interface AttendanceHistoryItem {
@@ -108,6 +110,45 @@ export const AttendanceManagement: React.FC = () => {
   }>({});
 
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
+
+  // Alunos avulsos adicionados à chamada na sessão atual
+  const [extraStudents, setExtraStudents] = useState<AttendanceStudentRow[]>([]);
+  const [showExtraModal, setShowExtraModal] = useState(false);
+  const [selectedExtraId, setSelectedExtraId] = useState('');
+
+  // Limpa alunos avulsos temporários locais ao alterar filtros da chamada
+  useEffect(() => {
+    setExtraStudents([]);
+  }, [selectedClassId, attendanceDate]);
+
+  const handleAddExtraStudent = (student: Student) => {
+    const isAlreadyListed = [
+      ...(attendanceList || []),
+      ...extraStudents,
+    ].some((s) => s.studentId === student.id);
+
+    if (isAlreadyListed) {
+      alert('Este aluno já está na lista de chamada!');
+      return;
+    }
+
+    const newExtraRow: AttendanceStudentRow = {
+      studentId: student.id,
+      name: student.name,
+      status: 'PRESENT',
+      notes: '',
+      isExtra: true,
+    };
+
+    setExtraStudents((prev) => [...prev, newExtraRow]);
+    setAttendanceState((prev) => ({
+      ...prev,
+      [student.id]: {
+        status: 'PRESENT',
+        notes: '',
+      },
+    }));
+  };
 
   // ─── Queries Gerais ────────────────────────────────────────────────────────
 
@@ -187,6 +228,7 @@ export const AttendanceManagement: React.FC = () => {
       queryClient.invalidateQueries({
         queryKey: ['attendance-class-list', selectedClassId, attendanceDate],
       });
+      setExtraStudents([]); // Limpa a lista temporária local
       showFeedback('Chamada salva com sucesso!');
     },
     onError: (err: any) => alert(err.response?.data?.message || 'Erro ao salvar chamada.'),
@@ -306,6 +348,16 @@ export const AttendanceManagement: React.FC = () => {
     });
   }
 
+  const hasSelectedClass = !!selectedClassId && !!attendanceDate;
+  const fullAttendanceList = [
+    ...(attendanceList || []),
+    ...extraStudents,
+  ];
+
+  const availableExtraStudents = (students || []).filter((st) => {
+    return !fullAttendanceList.some((s) => s.studentId === st.id);
+  });
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -402,16 +454,39 @@ export const AttendanceManagement: React.FC = () => {
             <div className="flex h-64 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/10">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-violet-500 border-t-transparent" />
             </div>
-          ) : !attendanceList || attendanceList.length === 0 ? (
+          ) : hasSelectedClass && fullAttendanceList.length === 0 ? (
             <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-xl border border-zinc-800 border-dashed bg-zinc-900/5 text-center p-8">
               <Users className="h-10 w-10 text-zinc-600" />
-              <h3 className="text-sm font-semibold text-zinc-300">Nenhum aluno matriculado</h3>
-              <p className="text-zinc-500 text-xs max-w-xs">
-                Certifique-se de que a turma possui alunos matriculados ativos para fazer a chamada.
+              <h3 className="text-sm font-semibold text-zinc-300">Nenhum aluno nesta chamada</h3>
+              <p className="text-zinc-550 text-xs max-w-xs mb-2">
+                Nenhum aluno matriculado na turma ou adicionado de forma avulsa para esta data.
               </p>
+              <button
+                type="button"
+                onClick={() => setShowExtraModal(true)}
+                className="flex items-center gap-1.5 rounded-lg bg-violet-600 px-4 py-2 text-xs font-semibold text-white hover:bg-violet-700 transition-colors cursor-pointer"
+              >
+                <UserPlus className="h-4 w-4" />
+                Adicionar Primeiro Aluno Avulso
+              </button>
             </div>
           ) : (
             <div className="space-y-4">
+              {/* Header da Chamada */}
+              <div className="flex items-center justify-between border-b border-zinc-850 pb-2">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Alunos na Aula</h3>
+                {hasSelectedClass && (
+                  <button
+                    type="button"
+                    onClick={() => setShowExtraModal(true)}
+                    className="flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-1.5 text-xs font-semibold text-violet-400 hover:text-violet-300 hover:bg-zinc-800 transition-all active:scale-[0.98] cursor-pointer"
+                  >
+                    <UserPlus className="h-3.5 w-3.5" />
+                    Adicionar Aluno Avulso
+                  </button>
+                )}
+              </div>
+
               <div className="rounded-xl border border-zinc-800 bg-zinc-900/10 overflow-hidden overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -422,7 +497,7 @@ export const AttendanceManagement: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800/60">
-                    {attendanceList.map((row) => {
+                    {fullAttendanceList.map((row) => {
                       const localRecord = attendanceState[row.studentId] || {
                         status: 'PRESENT',
                         notes: '',
@@ -430,9 +505,16 @@ export const AttendanceManagement: React.FC = () => {
                       return (
                         <tr key={row.studentId} className="hover:bg-zinc-900/10 transition-colors">
                           <td className="px-6 py-4">
-                            <span className="font-semibold text-zinc-150 text-sm block">
-                              {row.name}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-zinc-150 text-sm">
+                                {row.name}
+                              </span>
+                              {row.isExtra && (
+                                <span className="inline-flex items-center rounded-md border border-amber-500/25 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-amber-400 animate-pulse">
+                                  Avulso / Reposição
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center justify-center gap-1.5">
@@ -479,13 +561,88 @@ export const AttendanceManagement: React.FC = () => {
                   type="button"
                   onClick={submitAttendance}
                   disabled={saveAttendanceMutation.isPending}
-                  className="rounded-lg bg-violet-600 px-6 py-3 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-50 transition-colors shadow-md shadow-violet-500/10 active:scale-[0.98]"
+                  className="rounded-lg bg-violet-600 px-6 py-3 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-50 transition-colors shadow-md shadow-violet-500/10 active:scale-[0.98] cursor-pointer"
                 >
                   {saveAttendanceMutation.isPending ? 'Salvando Chamada...' : 'Salvar Chamada'}
                 </button>
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Modal: Adicionar Aluno Avulso */}
+      {showExtraModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
+            <div className="mb-5 flex items-center justify-between border-b border-zinc-800 pb-3">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <UserPlus className="h-5 w-5 text-violet-500" />
+                Adicionar Aluno Avulso
+              </h3>
+              <button
+                onClick={() => {
+                  setShowExtraModal(false);
+                  setSelectedExtraId('');
+                }}
+                className="text-zinc-500 hover:text-zinc-200 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-zinc-400 text-xs">
+                Selecione um aluno ativo da academia para marcar presença nesta aula. Ele será listado temporariamente na chamada deste dia.
+              </p>
+
+              <div>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
+                  Selecione o Aluno
+                </label>
+                <select
+                  value={selectedExtraId}
+                  onChange={(e) => setSelectedExtraId(e.target.value)}
+                  className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-150 outline-none focus:border-violet-500/80"
+                >
+                  <option value="">Escolha um aluno...</option>
+                  {availableExtraStudents.map((st) => (
+                    <option key={st.id} value={st.id}>
+                      {st.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowExtraModal(false);
+                    setSelectedExtraId('');
+                  }}
+                  className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-4 py-2 text-xs font-semibold text-zinc-300 hover:bg-[#1C1C1C] hover:text-zinc-150 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  disabled={!selectedExtraId}
+                  onClick={() => {
+                    const student = students?.find((s) => s.id === selectedExtraId);
+                    if (student) {
+                      handleAddExtraStudent(student);
+                    }
+                    setShowExtraModal(false);
+                    setSelectedExtraId('');
+                  }}
+                  className="rounded-lg bg-violet-600 px-4 py-2 text-xs font-semibold text-white hover:bg-violet-700 disabled:opacity-40 transition-colors cursor-pointer"
+                >
+                  Adicionar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

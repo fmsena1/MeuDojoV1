@@ -104,8 +104,33 @@ export class AttendancesService {
         name: en.student.name,
         status: att?.status || null, // null significa que a chamada não foi feita para este aluno ainda
         notes: att?.notes || null,
+        isExtra: false, // Aluno matriculado regular
       };
     });
+
+    // Identifica alunos que receberam presença avulsa (estão na lista de presenças mas não estão matriculados na turma)
+    const extraAttendances = attendances.filter(
+      (a) => !list.some((l) => l.studentId === a.studentId),
+    );
+
+    if (extraAttendances.length > 0) {
+      const extraStudentIds = extraAttendances.map((a) => a.studentId);
+      const extraStudents = await this.prisma.student.findMany({
+        where: { id: { in: extraStudentIds }, tenantId },
+        select: { id: true, name: true },
+      });
+
+      extraAttendances.forEach((att) => {
+        const student = extraStudents.find((s) => s.id === att.studentId);
+        list.push({
+          studentId: att.studentId,
+          name: student?.name || 'Aluno Avulso',
+          status: att.status as any,
+          notes: att.notes || null,
+          isExtra: true, // Aluno avulso (presença sem matrícula)
+        });
+      });
+    }
 
     // Ordena por nome do aluno
     return list.sort((a, b) => a.name.localeCompare(b.name));
