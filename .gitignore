@@ -1,1 +1,60 @@
 /.agents
+/.claude
+/produts
+
+
+# --- NODE & BUILD ---
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+
+
+# --- VITE ---
+.vite/build/
+.vite/deps/
+
+
+# --- NESTJS ---
+# Compiled backend code
+dist/
+
+
+# --- LINUX / DOCKER / DEV ---
+# Environment variables (IMPORTANT: contains secrets!)
+.env
+.env.local
+.env.test
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# IntelliJ / VSCode
+.idea/
+.vscode/
+
+#Agents
+/.agents
+/.claude
