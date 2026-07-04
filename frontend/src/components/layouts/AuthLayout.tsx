@@ -11,7 +11,7 @@ export const AuthLayout: React.FC = () => {
 
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-8 backdrop-blur-xl shadow-2xl">
         <div className="mb-8 flex flex-col items-center">
-          <svg width="220" height="63" viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg" className="mb-2 shrink-0">
+          <svg width="150" height="76" viewBox="0 0 235 120" xmlns="http://www.w3.org/2000/svg" className="mb-2 shrink-0">
             <defs>
               <linearGradient id="dojoGradientAuth" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#E53935"/>
@@ -26,7 +26,6 @@ export const AuthLayout: React.FC = () => {
             <path d="M60 62 C52 66 50 73 60 82 C70 73 68 66 60 62Z" fill="#E53935"/>
             <text x="120" y="56" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#FFFFFF">Meu</text>
             <text x="120" y="90" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#E53935">Dojo</text>
-            <text x="121" y="108" font-family="Segoe UI, Arial, sans-serif" font-size="10" letter-spacing="2" fill="#777">GESTÃO DE ARTES MARCIAIS</text>
           </svg>
           <p className="text-sm text-zinc-400">A melhor gestão para sua academia de artes marciais</p>
         </div>
