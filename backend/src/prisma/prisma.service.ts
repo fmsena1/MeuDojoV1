@@ -16,7 +16,13 @@ export class PrismaService
       process.env.DATABASE_URL ||
       'postgresql://postgres:postgres@localhost:5432/meudojo?schema=public';
 
-    const pool = new Pool({ connectionString });
+    const isLocalhost = connectionString.includes('localhost') || connectionString.includes('127.0.0.1');
+    const ssl = isLocalhost ? false : { rejectUnauthorized: false };
+
+    const pool = new Pool({ 
+      connectionString,
+      ssl,
+    });
     const adapter = new PrismaPg(pool);
 
     super({
