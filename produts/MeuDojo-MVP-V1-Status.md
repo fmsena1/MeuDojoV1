@@ -47,13 +47,13 @@ Este documento acompanha a evolução do desenvolvimento do MVP v1 do MeuDojo co
 - [x] **Dashboard financeiro**: Resumo rápido sobre receitas do mês e inadimplência.
 
 ### 6. Dashboard (Fase 3)
-- [/] **Estatísticas básicas**: Layout do frontend projetado e estruturado.
-- [ ] **Total de alunos**: Integração e contagem dinâmica em banco.
-- [ ] **Professores**: Contagem dinâmica de professores ativos no tenant.
-- [ ] **Turmas**: Contagem dinâmica de turmas ativas.
-- [ ] **Mensalidades pendentes**: Listagem de mensalidades com pagamento atrasado.
-- [ ] **Receita do mês**: Exibição dos recebimentos no mês corrente.
-- [ ] **Gráficos**: Integração com bibliotecas de gráficos para exibição visual do fluxo de caixa e frequência.
+- [x] **Estatísticas básicas**: Layout do frontend projetado e estruturado.
+- [x] **Total de alunos**: Integração e contagem dinâmica em banco.
+- [x] **Professores**: Contagem dinâmica de professores ativos no tenant.
+- [x] **Turmas**: Contagem dinâmica de turmas ativas.
+- [x] **Mensalidades pendentes**: Listagem de mensalidades com pagamento atrasado.
+- [x] **Receita do mês**: Exibição dos recebimentos no mês corrente.
+- [x] **Gráficos**: Integração com bibliotecas de gráficos para exibição visual do fluxo de caixa e frequência.
 
 ### 7. Relatórios (Fase 4)
 - [ ] **Alunos**: Listagem com status de matrícula.

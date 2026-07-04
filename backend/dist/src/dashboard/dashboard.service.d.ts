@@ -7,5 +7,21 @@ export declare class DashboardService {
         totalTeachers: number;
         totalClasses: number;
         pendingFees: number;
+        monthlyRevenue: number;
+        overdueFeesList: {
+            id: string;
+            studentName: string;
+            amount: number;
+            dueDate: string;
+        }[];
+        financeHistory: {
+            month: string;
+            receitas: number;
+            despesas: number;
+        }[];
+        attendanceHistory: {
+            date: string;
+            presentes: number;
+        }[];
     }>;
 }
