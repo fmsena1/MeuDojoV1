@@ -75,3 +75,25 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-brand-red);
 }
+
+/* ── Mobile-First Global Rules ────────────────────────────── */
+
+/* Previne zoom automático no iOS ao focar em inputs (font-size mínimo 16px) */
+input, select, textarea {
+  font-size: 16px;
+}
+
+/* Melhora responsividade de toque em botões e links */
+button, a {
+  touch-action: manipulation;
+}
+
+/* Previne scroll lateral indesejado no body */
+body {
+  overflow-x: hidden;
+}
+
+/* Permite scroll suave em toda a página */
+html {
+  scroll-behavior: smooth;
+}

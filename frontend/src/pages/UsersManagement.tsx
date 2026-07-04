@@ -199,7 +199,7 @@ export const UsersManagement: React.FC = () => {
 
       {/* Modal Cadastro de Usuário */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm p-4 pt-8">
           <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
             <div className="mb-4 flex items-center justify-between border-b border-zinc-800 pb-3">
               <h3 className="text-lg font-bold text-white">Adicionar Novo Membro</h3>

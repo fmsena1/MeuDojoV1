@@ -400,10 +400,10 @@ export const StudentsManagement: React.FC = () => {
               <thead className="bg-zinc-900/40 text-zinc-400 font-semibold uppercase tracking-wider text-xs border-b border-zinc-800">
                 <tr>
                   <th className="px-6 py-4">Nome</th>
-                  <th className="px-6 py-4">Contato</th>
-                  <th className="px-6 py-4">CPF</th>
+                  <th className="px-6 py-4 hidden md:table-cell">Contato</th>
+                  <th className="px-6 py-4 hidden sm:table-cell">CPF</th>
                   <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4">Acesso Portal</th>
+                  <th className="px-6 py-4 hidden lg:table-cell">Acesso Portal</th>
                   {canEdit && <th className="px-6 py-4 text-right">Ações</th>}
                 </tr>
               </thead>
@@ -421,14 +421,14 @@ export const StudentsManagement: React.FC = () => {
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 hidden md:table-cell">
                       <div className="flex flex-col gap-0.5 text-zinc-300 text-xs">
                         {item.email && <span>{item.email}</span>}
                         {item.phone && <span className="text-zinc-400">{item.phone}</span>}
                         {!item.email && !item.phone && <span className="text-zinc-550 italic">Sem contato</span>}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-zinc-400">
+                    <td className="px-6 py-4 text-zinc-400 hidden sm:table-cell">
                       {item.cpf || <span className="text-zinc-600">-</span>}
                     </td>
                     <td className="px-6 py-4">
@@ -442,7 +442,7 @@ export const StudentsManagement: React.FC = () => {
                         {item.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 hidden lg:table-cell">
                       {item.userId ? (
                         <span className="inline-flex items-center gap-1 text-xs text-violet-400 font-medium">
                           <CheckCircle className="h-3.5 w-3.5 text-violet-500" />
@@ -482,7 +482,7 @@ export const StudentsManagement: React.FC = () => {
 
       {/* Modal Cadastro/Edição */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="w-full max-w-2xl rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl my-8">
             <div className="mb-6 flex items-center justify-between border-b border-zinc-800 pb-3">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">

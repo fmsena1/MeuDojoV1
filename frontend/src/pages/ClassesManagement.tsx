@@ -475,7 +475,7 @@ export const ClassesManagement: React.FC = () => {
 
       {/* ─── Modal de Turma (Criar/Editar) ─── */}
       {showClassModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl my-8">
             <div className="mb-5 flex items-center justify-between border-b border-zinc-800 pb-3">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
@@ -650,7 +650,7 @@ export const ClassesManagement: React.FC = () => {
       {/* ─── Gaveta / Modal de Alunos Matriculados ─── */}
       {selectedClassForEnrollment && (
         <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/60 backdrop-blur-sm">
-          <div className="h-full w-full max-w-md border-l border-zinc-800 bg-zinc-900 p-6 shadow-2xl flex flex-col justify-between animate-slide-in">
+          <div className="h-full w-full md:max-w-md border-l border-zinc-800 bg-zinc-900 p-4 md:p-6 shadow-2xl flex flex-col justify-between animate-slide-in overflow-y-auto">
             <div>
               {/* Header do Drawer */}
               <div className="flex items-center justify-between pb-4 border-b border-zinc-800 mb-5">

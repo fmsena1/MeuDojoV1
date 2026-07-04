@@ -527,7 +527,7 @@ export const FinancialManagement: React.FC = () => {
                 🎉 Nenhum aluno inadimplente encontrado! Excelente adimplência de caixa.
               </div>
             ) : (
-              <div className="border border-zinc-800 rounded-lg bg-zinc-950/40 overflow-hidden">
+              <div className="border border-zinc-800 rounded-lg bg-zinc-950/40 overflow-hidden overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
                     <tr className="border-b border-zinc-800 bg-zinc-950/70 text-zinc-400 uppercase tracking-wider font-bold">
@@ -674,7 +674,7 @@ export const FinancialManagement: React.FC = () => {
               </p>
             </div>
           ) : (
-            <div className="border border-zinc-800 rounded-xl bg-zinc-900/10 overflow-hidden">
+            <div className="border border-zinc-800 rounded-xl bg-zinc-900/10 overflow-hidden overflow-x-auto">
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-zinc-800 bg-zinc-950/40 text-xs font-bold uppercase tracking-wider text-zinc-400">
@@ -822,7 +822,7 @@ export const FinancialManagement: React.FC = () => {
               </p>
             </div>
           ) : (
-            <div className="border border-zinc-800 rounded-xl bg-zinc-900/10 overflow-hidden">
+            <div className="border border-zinc-800 rounded-xl bg-zinc-900/10 overflow-hidden overflow-x-auto">
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-zinc-800 bg-zinc-950/40 text-xs font-bold uppercase tracking-wider text-zinc-400">
@@ -997,7 +997,7 @@ export const FinancialManagement: React.FC = () => {
               </p>
             </div>
           ) : (
-            <div className="border border-zinc-800 rounded-xl bg-zinc-900/10 overflow-hidden">
+            <div className="border border-zinc-800 rounded-xl bg-zinc-900/10 overflow-hidden overflow-x-auto">
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-zinc-800 bg-zinc-950/40 text-xs font-bold uppercase tracking-wider text-zinc-400">
@@ -1059,7 +1059,7 @@ export const FinancialManagement: React.FC = () => {
 
       {/* 1. Modal: Criar Cobrança Individual */}
       {showFeeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/75 backdrop-blur-sm p-4 pt-8">
           <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-950 p-6 space-y-4">
             <h3 className="text-lg font-bold text-white">Criar Nova Cobrança</h3>
             {formError && <p className="text-xs text-rose-400 bg-rose-500/5 p-2.5 rounded border border-rose-500/20">{formError}</p>}
@@ -1136,7 +1136,7 @@ export const FinancialManagement: React.FC = () => {
 
       {/* 2. Modal: Gerar em Lote */}
       {showBulkModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/75 backdrop-blur-sm p-4 pt-8">
           <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-950 p-6 space-y-4">
             <h3 className="text-lg font-bold text-white">Geração de Cobranças em Lote</h3>
             <p className="text-zinc-400 text-xs">
@@ -1219,7 +1219,7 @@ export const FinancialManagement: React.FC = () => {
 
       {/* 3. Modal: Registrar Pagamento */}
       {showPayModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/75 backdrop-blur-sm p-4 pt-8">
           <div className="w-full max-w-sm rounded-xl border border-zinc-800 bg-zinc-950 p-6 space-y-4">
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
               <Check className="h-5 w-5 text-emerald-400" />
@@ -1267,7 +1267,7 @@ export const FinancialManagement: React.FC = () => {
 
       {/* 4. Modal: Nova Movimentação de Caixa */}
       {showTxModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/75 backdrop-blur-sm p-4 pt-8">
           <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-950 p-6 space-y-4">
             <h3 className="text-lg font-bold text-white">Lançar no Caixa</h3>
             {formError && <p className="text-xs text-rose-400 bg-rose-500/5 p-2.5 rounded border border-rose-500/20">{formError}</p>}

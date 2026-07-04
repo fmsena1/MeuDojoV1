@@ -412,7 +412,7 @@ export const AttendanceManagement: React.FC = () => {
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="rounded-xl border border-zinc-800 bg-zinc-900/10 overflow-hidden">
+              <div className="rounded-xl border border-zinc-800 bg-zinc-900/10 overflow-hidden overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-zinc-800 bg-zinc-950/40 text-xs font-bold uppercase tracking-wider text-zinc-400">

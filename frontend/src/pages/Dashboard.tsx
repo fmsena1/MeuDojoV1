@@ -232,11 +232,11 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Welcome Banner */}
-      <div className="relative rounded-2xl border border-zinc-800 bg-gradient-to-r from-zinc-900/60 to-zinc-950 p-8 overflow-hidden">
-        <div className="absolute right-0 top-0 h-[250px] w-[250px] rounded-full bg-red-600/5 blur-[50px] pointer-events-none"></div>
+      <div className="relative rounded-2xl border border-zinc-800 bg-gradient-to-r from-zinc-900/60 to-zinc-950 p-5 sm:p-8 overflow-hidden">
+        <div className="absolute right-0 top-0 h-[200px] w-[200px] sm:h-[250px] sm:w-[250px] rounded-full bg-red-600/5 blur-[50px] pointer-events-none" />
         
         <div className="relative z-10 space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight text-white">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
             Olá, {user?.name}! 👋
           </h2>
           <p className="text-zinc-400 text-sm max-w-xl">
@@ -247,7 +247,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         {cards.map((stat, i) => {
           const Icon = stat.icon;
           return (
@@ -268,7 +268,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Gráficos Operacionais */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
         {/* Fluxo de Caixa */}
         <div className="rounded-xl border border-zinc-800 bg-zinc-900/10 p-6 space-y-4">
           <div className="flex items-center justify-between">
@@ -307,7 +307,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Tabela de Mensalidades Atrasadas */}
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/10 p-6 space-y-4">
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900/10 p-4 sm:p-6 space-y-4">
         <div className="flex items-center justify-between border-b border-zinc-850 pb-3">
           <div className="flex items-center gap-2 text-rose-500">
             <AlertTriangle className="h-5 w-5" />
@@ -327,8 +327,8 @@ export const Dashboard: React.FC = () => {
             🎉 Nenhuma mensalidade vencida encontrada no sistema! Excelente saúde financeira.
           </div>
         ) : (
-          <div className="border border-zinc-850 rounded-lg overflow-hidden bg-zinc-950/20">
-            <table className="w-full text-left border-collapse text-xs">
+          <div className="overflow-x-auto rounded-lg border border-zinc-850 bg-zinc-950/20">
+            <table className="min-w-full text-left border-collapse text-xs">
               <thead>
                 <tr className="border-b border-zinc-850 bg-zinc-950/60 text-zinc-400 uppercase tracking-wider font-bold">
                   <th className="px-5 py-3">Aluno</th>
