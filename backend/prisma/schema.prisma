@@ -1,0 +1,264 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  RECEPTIONIST
+  STUDENT
+}
+
+model Tenant {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String
+  slug      String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  users       User[]
+  students    Student[]
+  teachers    Teacher[]
+  martialArts MartialArt[]
+  graduations Graduation[]
+  classes     Class[]
+  enrollments Enrollment[]
+  attendances Attendance[]
+  membershipFees MembershipFee[]
+  transactions   Transaction[]
+
+  @@map("tenants")
+}
+
+model User {
+  id        String    @id @default(uuid()) @db.Uuid
+  email     String    @unique
+  password  String
+  name      String
+  role      Role      @default(STUDENT)
+  tenantId  String    @map("tenant_id") @db.Uuid
+  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  student   Student?
+  teacher   Teacher?
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("users")
+}
+
+model Student {
+  id           String    @id @default(uuid()) @db.Uuid
+  tenantId     String    @map("tenant_id") @db.Uuid
+  tenant       Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userId       String?   @unique @map("user_id") @db.Uuid
+  user         User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name         String
+  email        String?
+  phone        String?
+  birthDate    DateTime? @map("birth_date")
+  gender       String?
+  rg           String?
+  cpf          String?
+  street       String?
+  number       String?
+  complement   String?
+  neighborhood String?
+  city         String?
+  state        String?
+  zipCode      String?   @map("zip_code")
+  status       String    @default("ACTIVE")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  enrollments  Enrollment[]
+  attendances  Attendance[]
+  membershipFees MembershipFee[]
+
+  @@map("students")
+}
+
+model Teacher {
+  id           String    @id @default(uuid()) @db.Uuid
+  tenantId     String    @map("tenant_id") @db.Uuid
+  tenant       Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userId       String?   @unique @map("user_id") @db.Uuid
+  user         User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name         String
+  email        String?
+  phone        String?
+  birthDate    DateTime? @map("birth_date")
+  gender       String?
+  rg           String?
+  cpf          String?
+  street       String?
+  number       String?
+  complement   String?
+  neighborhood String?
+  city         String?
+  state        String?
+  zipCode      String?   @map("zip_code")
+  bio          String?
+  specialties  String?
+  graduation   String?
+  status       String    @default("ACTIVE")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  classes      Class[]
+
+  @@map("teachers")
+}
+
+model MartialArt {
+  id          String       @id @default(uuid()) @db.Uuid
+  tenantId    String       @map("tenant_id") @db.Uuid
+  tenant      Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  deletedAt   DateTime?    @map("deleted_at")
+
+  graduations Graduation[]
+  classes     Class[]
+
+  @@map("martial_arts")
+}
+
+model Graduation {
+  id           String      @id @default(uuid()) @db.Uuid
+  tenantId     String      @map("tenant_id") @db.Uuid
+  tenant       Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  martialArtId String      @map("martial_art_id") @db.Uuid
+  martialArt   MartialArt  @relation(fields: [martialArtId], references: [id], onDelete: Cascade)
+  name         String
+  order        Int         @default(0)
+  color        String?
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+  deletedAt    DateTime?   @map("deleted_at")
+
+  @@map("graduations")
+}
+
+model Class {
+  id           String          @id @default(uuid()) @db.Uuid
+  tenantId     String          @map("tenant_id") @db.Uuid
+  tenant       Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  martialArtId String          @map("martial_art_id") @db.Uuid
+  martialArt   MartialArt      @relation(fields: [martialArtId], references: [id], onDelete: Cascade)
+  teacherId    String          @map("teacher_id") @db.Uuid
+  teacher      Teacher         @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  name         String
+  description  String?
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+  deletedAt    DateTime?       @map("deleted_at")
+
+  schedules    ClassSchedule[]
+  enrollments  Enrollment[]
+  attendances  Attendance[]
+
+  @@map("classes")
+}
+
+model ClassSchedule {
+  id        String   @id @default(uuid()) @db.Uuid
+  classId   String   @map("class_id") @db.Uuid
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  dayOfWeek Int
+  startTime String
+  endTime   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("class_schedules")
+}
+
+model Enrollment {
+  id        String    @id @default(uuid()) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  studentId String    @map("student_id") @db.Uuid
+  student   Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  classId   String    @map("class_id") @db.Uuid
+  class     Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
+  status    String    @default("ACTIVE")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("enrollments")
+}
+
+model Attendance {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  classId   String   @map("class_id") @db.Uuid
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  studentId String   @map("student_id") @db.Uuid
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  date      DateTime @db.Date
+  status    String   // PRESENT, ABSENT, LATE, JUSTIFIED
+  notes     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([studentId, classId, date])
+  @@map("attendances")
+}
+
+enum TransactionType {
+  REVENUE
+  EXPENSE
+}
+
+model MembershipFee {
+  id            String    @id @default(uuid()) @db.Uuid
+  tenantId      String    @map("tenant_id") @db.Uuid
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  studentId     String    @map("student_id") @db.Uuid
+  student       Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  amount        Float
+  dueDate       DateTime  @db.Date @map("due_date")
+  paidAt        DateTime? @map("paid_at")
+  status        String    @default("PENDING") // PENDING, PAID, OVERDUE
+  notes         String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  transactionId String?   @unique @map("transaction_id") @db.Uuid
+  transaction   Transaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+
+  @@map("membership_fees")
+}
+
+model Transaction {
+  id          String          @id @default(uuid()) @db.Uuid
+  tenantId    String          @map("tenant_id") @db.Uuid
+  tenant      Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  type        TransactionType
+  category    String          // Ex: "MEMBERSHIP", "PRODUCT", "SEMINAR", "RENT", "SALARY", "UTILITIES", "OTHER"
+  amount      Float
+  date        DateTime        @db.Date
+  description String
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  deletedAt   DateTime?       @map("deleted_at")
+
+  membershipFee MembershipFee?
+
+  @@map("transactions")
+}
+
+
