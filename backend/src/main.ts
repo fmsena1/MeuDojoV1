@@ -5,9 +5,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Prefixo global
-  app.setGlobalPrefix('api');
-
   // Habilitar CORS para permitir comunicação com o frontend
   app.enableCors({
     origin: '*',
@@ -26,14 +23,14 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  SwaggerModule.setup('docs', app, document);
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
   console.log(`\n[MeuDojo API] Servidor iniciado com sucesso!`);
   console.log(`[MeuDojo API] Backend rodando em: http://localhost:${port}`);
   console.log(
-    `[MeuDojo API] Documentação Swagger em: http://localhost:${port}/api/docs\n`,
+    `[MeuDojo API] Documentação Swagger em: http://localhost:${port}/docs\n`,
   );
 }
 bootstrap();
