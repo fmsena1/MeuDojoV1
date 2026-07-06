@@ -37,6 +37,7 @@ interface StudentFormInput {
   zipCode: string;
   status: string;
   monthlyFee: number;
+  paymentDay: number;
   createUserAccess: boolean;
   password: string;
 }
@@ -59,6 +60,7 @@ interface Student {
   zipCode?: string;
   status: string;
   monthlyFee?: number;
+  paymentDay?: number;
   userId?: string;
   user?: {
     id: string;
@@ -161,6 +163,7 @@ export const StudentsManagement: React.FC = () => {
       zipCode: '',
       status: 'ACTIVE',
       monthlyFee: 0,
+      paymentDay: 10,
       createUserAccess: false,
       password: '',
     },
@@ -195,6 +198,7 @@ export const StudentsManagement: React.FC = () => {
       zipCode: '',
       status: 'ACTIVE',
       monthlyFee: 0,
+      paymentDay: 10,
       createUserAccess: false,
       password: '',
     });
@@ -221,6 +225,7 @@ export const StudentsManagement: React.FC = () => {
     setValue('zipCode', student.zipCode || '');
     setValue('status', student.status);
     setValue('monthlyFee', student.monthlyFee || 0);
+    setValue('paymentDay', student.paymentDay || 10);
     setValue('createUserAccess', !!student.userId);
     setValue('password', '');
 
@@ -290,6 +295,7 @@ export const StudentsManagement: React.FC = () => {
       zipCode: data.zipCode || null,
       status: data.status,
       monthlyFee: Number(data.monthlyFee) || 0,
+      paymentDay: Number(data.paymentDay) || 10,
       createUserAccess: data.createUserAccess,
       password: data.password || null,
     };
@@ -657,6 +663,25 @@ export const StudentsManagement: React.FC = () => {
                       className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2 text-sm text-zinc-100 placeholder-zinc-700 outline-none transition-all focus:border-violet-500/80"
                     />
                     {errors.monthlyFee && <p className="mt-1 text-xs text-red-400">{errors.monthlyFee.message}</p>}
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-455 mb-1.5 uppercase tracking-wide">
+                      Dia de Vencimento Padrão
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="31"
+                      placeholder="10"
+                      {...register('paymentDay', {
+                        valueAsNumber: true,
+                        min: { value: 1, message: 'O dia deve ser entre 1 e 31.' },
+                        max: { value: 31, message: 'O dia deve ser entre 1 e 31.' }
+                      })}
+                      className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2 text-sm text-zinc-100 placeholder-zinc-700 outline-none transition-all focus:border-violet-500/80"
+                    />
+                    {errors.paymentDay && <p className="mt-1 text-xs text-red-400">{errors.paymentDay.message}</p>}
                   </div>
                 </div>
               )}

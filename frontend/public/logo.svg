@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="512" height="512">
+  <defs>
+    <linearGradient id="logoDojoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#E53935"/>
+      <stop offset="100%" stopColor="#B71C1C"/>
+    </linearGradient>
+  </defs>
+  <!-- Fundo escuro integrado ao tema dark do MeuDojo -->
+  <rect width="120" height="120" rx="20" fill="#09090b"/>
+  <!-- Círculo do Logo -->
+  <circle cx="60" cy="60" r="42" fill="none" stroke="url(#logoDojoGradient)" strokeWidth="6"/>
+  <!-- Elementos internos do logo (Templo/Dojo) -->
+  <rect x="35" y="35" width="50" height="6" rx="3" fill="#FFFFFF"/>
+  <rect x="40" y="43" width="40" height="5" rx="2" fill="#E53935"/>
+  <rect x="42" y="48" width="6" height="28" fill="#FFFFFF"/>
+  <rect x="72" y="48" width="6" height="28" fill="#FFFFFF"/>
+  <path d="M60 62 C52 66 50 73 60 82 C70 73 68 66 60 62Z" fill="#E53935"/>
+</svg>

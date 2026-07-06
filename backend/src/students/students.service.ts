@@ -74,6 +74,7 @@ export class StudentsService {
         zipCode: data.zipCode,
         status: data.status || 'ACTIVE',
         monthlyFee: data.monthlyFee ?? 0,
+        paymentDay: data.paymentDay ?? 10,
       },
       include: {
         user: {
@@ -235,6 +236,7 @@ export class StudentsService {
         zipCode: data.zipCode,
         status: data.status,
         monthlyFee: data.monthlyFee,
+        paymentDay: data.paymentDay,
       },
       include: {
         user: {

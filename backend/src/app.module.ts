@@ -14,6 +14,7 @@ import { AttendancesModule } from './attendances/attendances.module';
 import { MembershipFeesModule } from './membership-fees/membership-fees.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     MembershipFeesModule,
     TransactionsModule,
     DashboardModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

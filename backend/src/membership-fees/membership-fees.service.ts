@@ -86,15 +86,24 @@ export class MembershipFeesService {
       };
     }
 
+    const year = startOfMonth.getFullYear();
+    const month = startOfMonth.getMonth(); // 0-indexed
+
     // Cria as mensalidades em lote
     await this.prisma.membershipFee.createMany({
-      data: studentsToBill.map((student) => ({
-        tenantId,
-        studentId: student.id,
-        amount: student.monthlyFee && student.monthlyFee > 0 ? student.monthlyFee : data.amount,
-        dueDate,
-        status: 'PENDING',
-      })),
+      data: studentsToBill.map((student) => {
+        // Evita dias de vencimento inválidos para meses curtos (ex: dia 31 em Fevereiro)
+        const day = Math.min(student.paymentDay || 10, new Date(year, month + 1, 0).getDate());
+        const studentDueDate = new Date(Date.UTC(year, month, day));
+
+        return {
+          tenantId,
+          studentId: student.id,
+          amount: student.monthlyFee && student.monthlyFee > 0 ? student.monthlyFee : data.amount,
+          dueDate: studentDueDate,
+          status: 'PENDING',
+        };
+      }),
     });
 
     return { success: true, count: studentsToBill.length };

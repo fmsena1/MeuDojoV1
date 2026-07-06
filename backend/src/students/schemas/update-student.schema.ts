@@ -20,6 +20,7 @@ export class UpdateStudentDto {
   zipCode?: string | null;
   status?: string;
   monthlyFee?: number;
+  paymentDay?: number;
   createUserAccess?: boolean;
   password?: string | null;
 }

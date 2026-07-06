@@ -5,6 +5,7 @@ import {
   LayoutDashboard, Users, LogOut, ShieldAlert, GraduationCap,
   Award, Target, Calendar, ClipboardCheck, DollarSign, Menu, X
 } from 'lucide-react';
+import { NotificationBell } from '../NotificationBell';
 
 export const DashboardLayout: React.FC = () => {
   const { user, logout } = useAuth();
@@ -187,6 +188,9 @@ export const DashboardLayout: React.FC = () => {
 
           {/* Spacer */}
           <div className="flex-1" />
+
+          {/* Sino de Notificações */}
+          <NotificationBell />
 
           {/* User info */}
           <div className="flex items-center gap-3">

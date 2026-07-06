@@ -28,6 +28,7 @@ interface Student {
   status: string;
   email?: string | null;
   monthlyFee?: number | null;
+  paymentDay?: number | null;
 }
 
 interface MembershipFee {
@@ -278,8 +279,9 @@ export const FinancialManagement: React.FC = () => {
     try {
       if (isPaid) {
         if (!feeId) {
-          const formattedDueDate = `${quickYear}-${String(quickMonth).padStart(2, '0')}-10`;
           const student = students?.find((s) => s.id === studentId);
+          const day = student?.paymentDay || 10;
+          const formattedDueDate = `${quickYear}-${String(quickMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
           const feeAmount = student?.monthlyFee && student.monthlyFee > 0 ? student.monthlyFee : quickAmount;
 
           const createRes = await createFeeMutation.mutateAsync({
