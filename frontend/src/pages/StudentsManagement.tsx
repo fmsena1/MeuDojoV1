@@ -36,6 +36,7 @@ interface StudentFormInput {
   state: string;
   zipCode: string;
   status: string;
+  monthlyFee: number;
   createUserAccess: boolean;
   password: string;
 }
@@ -57,6 +58,7 @@ interface Student {
   state?: string;
   zipCode?: string;
   status: string;
+  monthlyFee?: number;
   userId?: string;
   user?: {
     id: string;
@@ -158,6 +160,7 @@ export const StudentsManagement: React.FC = () => {
       state: '',
       zipCode: '',
       status: 'ACTIVE',
+      monthlyFee: 0,
       createUserAccess: false,
       password: '',
     },
@@ -191,6 +194,7 @@ export const StudentsManagement: React.FC = () => {
       state: '',
       zipCode: '',
       status: 'ACTIVE',
+      monthlyFee: 0,
       createUserAccess: false,
       password: '',
     });
@@ -216,6 +220,7 @@ export const StudentsManagement: React.FC = () => {
     setValue('state', student.state || '');
     setValue('zipCode', student.zipCode || '');
     setValue('status', student.status);
+    setValue('monthlyFee', student.monthlyFee || 0);
     setValue('createUserAccess', !!student.userId);
     setValue('password', '');
 
@@ -284,6 +289,7 @@ export const StudentsManagement: React.FC = () => {
       state: data.state || null,
       zipCode: data.zipCode || null,
       status: data.status,
+      monthlyFee: Number(data.monthlyFee) || 0,
       createUserAccess: data.createUserAccess,
       password: data.password || null,
     };
@@ -633,6 +639,24 @@ export const StudentsManagement: React.FC = () => {
                       <option value="ACTIVE">Ativo</option>
                       <option value="INACTIVE">Inativo</option>
                     </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-455 mb-1.5 uppercase tracking-wide">
+                      Valor da Mensalidade (R$)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      placeholder="0.00"
+                      {...register('monthlyFee', {
+                        valueAsNumber: true,
+                        min: { value: 0, message: 'O valor deve ser maior ou igual a 0.' }
+                      })}
+                      className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3.5 py-2 text-sm text-zinc-100 placeholder-zinc-700 outline-none transition-all focus:border-violet-500/80"
+                    />
+                    {errors.monthlyFee && <p className="mt-1 text-xs text-red-400">{errors.monthlyFee.message}</p>}
                   </div>
                 </div>
               )}

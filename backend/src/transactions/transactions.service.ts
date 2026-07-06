@@ -217,6 +217,23 @@ export class TransactionsService {
       (a, b) => b.totalOverdueAmount - a.totalOverdueAmount,
     );
 
+    // Calcula a receita prevista com base na mensalidade de cada aluno ativo
+    const activeStudents = await this.prisma.student.findMany({
+      where: {
+        tenantId,
+        status: 'ACTIVE',
+        deletedAt: null,
+      },
+      select: {
+        monthlyFee: true,
+      },
+    });
+
+    const expectedRevenue = activeStudents.reduce(
+      (sum, s) => sum + (s.monthlyFee || 0),
+      0,
+    );
+
     return {
       monthlyRevenue: revenues._sum.amount || 0,
       monthlyExpense: expenses._sum.amount || 0,
@@ -224,6 +241,7 @@ export class TransactionsService {
       pendingCurrentMonthAmount: pendingCurrentMonth._sum.amount || 0,
       totalOverdueAmount: totalOverdue._sum.amount || 0,
       studentsOverdue,
+      expectedRevenue,
     };
   }
 }

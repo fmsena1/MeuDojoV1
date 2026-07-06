@@ -19,6 +19,7 @@ export const createStudentSchema = z.object({
   state: z.string().optional().nullable(),
   zipCode: z.string().optional().nullable(),
   status: z.string().default('ACTIVE'),
+  monthlyFee: z.number().min(0, 'A mensalidade deve ser maior ou igual a 0').optional().default(0),
 
   // Acesso opcional do usuário
   createUserAccess: z.boolean().default(false),
@@ -45,6 +46,7 @@ export class CreateStudentDto {
   state?: string | null;
   zipCode?: string | null;
   status?: string;
+  monthlyFee?: number;
   createUserAccess?: boolean;
   password?: string | null;
 }

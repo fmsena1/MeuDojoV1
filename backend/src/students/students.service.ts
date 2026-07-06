@@ -73,6 +73,7 @@ export class StudentsService {
         state: data.state,
         zipCode: data.zipCode,
         status: data.status || 'ACTIVE',
+        monthlyFee: data.monthlyFee ?? 0,
       },
       include: {
         user: {
@@ -233,6 +234,7 @@ export class StudentsService {
         state: data.state,
         zipCode: data.zipCode,
         status: data.status,
+        monthlyFee: data.monthlyFee,
       },
       include: {
         user: {

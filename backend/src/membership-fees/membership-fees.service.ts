@@ -91,7 +91,7 @@ export class MembershipFeesService {
       data: studentsToBill.map((student) => ({
         tenantId,
         studentId: student.id,
-        amount: data.amount,
+        amount: student.monthlyFee && student.monthlyFee > 0 ? student.monthlyFee : data.amount,
         dueDate,
         status: 'PENDING',
       })),

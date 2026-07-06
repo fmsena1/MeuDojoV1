@@ -27,6 +27,7 @@ interface Student {
   name: string;
   status: string;
   email?: string | null;
+  monthlyFee?: number | null;
 }
 
 interface MembershipFee {
@@ -61,6 +62,7 @@ interface FinancialDashboardResponse {
   pendingCurrentMonthAmount: number;
   totalOverdueAmount: number;
   studentsOverdue: OverdueStudent[];
+  expectedRevenue?: number;
 }
 
 interface Transaction {
@@ -277,9 +279,12 @@ export const FinancialManagement: React.FC = () => {
       if (isPaid) {
         if (!feeId) {
           const formattedDueDate = `${quickYear}-${String(quickMonth).padStart(2, '0')}-10`;
+          const student = students?.find((s) => s.id === studentId);
+          const feeAmount = student?.monthlyFee && student.monthlyFee > 0 ? student.monthlyFee : quickAmount;
+
           const createRes = await createFeeMutation.mutateAsync({
             studentId,
-            amount: quickAmount,
+            amount: feeAmount,
             dueDate: formattedDueDate,
             notes: `Gerada via faturamento rápido - ${quickMonth}/${quickYear}`,
           });
@@ -433,8 +438,8 @@ export const FinancialManagement: React.FC = () => {
         <div className="space-y-6">
           {/* Grid de Estatísticas */}
           <div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4"
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}
           >
             {/* Total Recebido */}
             <div className="rounded-xl border border-zinc-800 bg-zinc-900/20 p-5">
@@ -492,6 +497,21 @@ export const FinancialManagement: React.FC = () => {
               <div className="mt-4">
                 <span className="text-2xl font-bold text-white">
                   R$ {dashboardData.pendingCurrentMonthAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+            </div>
+
+            {/* Previsto (Mensalidades) */}
+            <div className="rounded-xl border border-zinc-800 bg-zinc-900/20 p-5">
+              <div className="flex items-center justify-between text-zinc-400">
+                <span className="text-xs font-semibold uppercase tracking-wider">Previsto (Mensalidades)</span>
+                <span className="p-2 rounded-lg bg-violet-500/10 text-violet-400">
+                  <Users className="h-4 w-4" />
+                </span>
+              </div>
+              <div className="mt-4">
+                <span className="text-2xl font-bold text-white">
+                  R$ {(dashboardData.expectedRevenue || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 </span>
               </div>
             </div>
@@ -860,7 +880,7 @@ export const FinancialManagement: React.FC = () => {
                           <span className="text-zinc-500 text-[10px] block">{item.student.email || 'Sem e-mail cadastrado'}</span>
                         </td>
                         <td className="px-6 py-4 font-bold text-white">
-                          R$ {(item.fee?.amount ?? quickAmount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          R$ {(item.fee?.amount ?? item.student.monthlyFee ?? quickAmount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </td>
                         <td className="px-6 py-4">
                           <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusClass}`}>

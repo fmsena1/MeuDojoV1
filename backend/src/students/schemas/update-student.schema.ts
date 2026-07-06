@@ -19,6 +19,7 @@ export class UpdateStudentDto {
   state?: string | null;
   zipCode?: string | null;
   status?: string;
+  monthlyFee?: number;
   createUserAccess?: boolean;
   password?: string | null;
 }
