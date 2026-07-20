@@ -13,6 +13,7 @@ import { MartialArtsManagement } from '../pages/MartialArtsManagement';
 import { ClassesManagement } from '../pages/ClassesManagement';
 import { AttendanceManagement } from '../pages/AttendanceManagement';
 import { FinancialManagement } from '../pages/FinancialManagement';
+import { HelpCenter } from '../pages/HelpCenter';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -36,6 +37,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="/presenca" element={<AttendanceManagement />} />
           <Route path="/financeiro" element={<FinancialManagement />} />
           <Route path="/usuarios" element={<UsersManagement />} />
+          <Route path="/ajuda" element={<HelpCenter />} />
         </Route>
       </Route>
 

@@ -60,3 +60,4 @@ Thumbs.db
 /.agents
 /.claude
 package-lock.json
+/docs

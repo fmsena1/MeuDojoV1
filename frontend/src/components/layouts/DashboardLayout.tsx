@@ -3,7 +3,7 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   LayoutDashboard, Users, LogOut, ShieldAlert, GraduationCap,
-  Award, Target, Calendar, ClipboardCheck, DollarSign, Menu, X
+  Award, Target, Calendar, ClipboardCheck, DollarSign, Menu, X, HelpCircle
 } from 'lucide-react';
 import { NotificationBell } from '../NotificationBell';
 
@@ -42,6 +42,7 @@ export const DashboardLayout: React.FC = () => {
     { path: '/presenca', label: 'Frequência', icon: ClipboardCheck, roles: ['ADMIN', 'TEACHER', 'RECEPTIONIST', 'STUDENT'] },
     { path: '/financeiro', label: 'Financeiro', icon: DollarSign, roles: ['ADMIN', 'RECEPTIONIST', 'STUDENT'] },
     { path: '/usuarios', label: 'Gestão de Membros', icon: Users, roles: ['ADMIN'] },
+    { path: '/ajuda', label: 'Central de Ajuda', icon: HelpCircle, roles: ['ADMIN', 'TEACHER', 'RECEPTIONIST', 'STUDENT'] },
   ];
 
   const filteredNavItems = navItems.filter((item) =>

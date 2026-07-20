@@ -90,9 +90,17 @@ A gestão de chamada é integrada de forma rápida e visual na aba **Frequência
    - **🟢 Presente**: O aluno compareceu e treinou normalmente.
    - **🔴 Falta**: Ausência sem justificativa.
    - **🟡 Atrasado**: Aluno chegou após o início do treino.
-    - **🟣 Justificado**: Aluno não pôde treinar, mas justificou a ausência.
+   - **🟣 Justificado**: Aluno não pôde treinar, mas justificou a ausência.
 5. Digite observações ou justificativas no campo de texto ao lado do nome do aluno se necessário (ex: *"Apresentou atestado"* ou *"Chegou 15 minutos atrasado"*).
 6. Clique em **Salvar Chamada** no fim da página para confirmar os registros.
+
+### ➕ Presença Avulsa ou Aula de Reposição
+Se um aluno precisa treinar em uma modalidade/turma na qual não está formalmente matriculado (como aula experimental, reposição ou planos livres de múltiplas artes marciais):
+1. Na tela de **Fazer Chamada**, clique no botão **"+ Adicionar Aluno Avulso"** no canto superior direito da tabela de chamada.
+2. Um modal será aberto exibindo a lista de todos os alunos ativos cadastrados no sistema que ainda não fazem parte da chamada atual.
+3. Busque o aluno e clique em **Adicionar**.
+4. O aluno será inserido dinamicamente na lista de chamadas com a tag pulsante **`Avulso / Reposição`** e status padrão definido como **Presente**.
+5. Ao clicar em **Salvar Chamada**, esta presença avulsa é persistida permanentemente no banco de dados e ficará visível ao consultar esta chamada no futuro.
 
 ### 📅 Histórico por Aluno (Calendário Interativo)
 1. Vá para a aba **Histórico por Aluno**.
@@ -103,6 +111,25 @@ A gestão de chamada é integrada de forma rápida e visual na aba **Frequência
    - Cada dia em que houve aula aparecerá colorido no calendário de acordo com a legenda de status (Verde, Vermelho, Laranja, Roxo).
    - O calendário exibe os dias dos meses adjacentes (anterior e posterior) de forma suavizada (cinza) para que a grade fique perfeitamente alinhada e completa.
    - Passe o mouse (hover) por cima de qualquer dia marcado para ver detalhes como: Nome da turma correspondente e observações/justificativas registradas.
+
+---
+
+## 📱 7. Aplicativo Instalável (PWA) & Uso Mobile
+
+O **MeuDojo** foi arquitetado sob o conceito *Mobile-First*, garantindo uma usabilidade premium em dispositivos móveis e permitindo a instalação nativa do sistema em qualquer celular ou computador.
+
+### 📥 Como Instalar o Aplicativo (PWA)
+1. Faça login na sua conta no navegador do seu smartphone ou computador.
+2. Na barra lateral de navegação (Sidebar), você verá o card/banner premium violeta **"Instalar Aplicativo"**.
+3. Clique em **Instalar**.
+4. **Desktop (Rich Install Dialog)**: Nos navegadores Chrome, Edge e outros baseados em Chromium, um diálogo elegante contendo capturas de tela reais do MeuDojo será aberto. Basta confirmar a instalação.
+5. **Mobile**: O app será adicionado à tela inicial do seu celular, com ícone próprio e inicialização limpa (sem barras de navegação do navegador).
+6. Após a instalação ser bem-sucedida, o banner de instalação desaparece da interface automaticamente.
+
+### 📱 Experiência Mobile-First
+* **Menu Deslizante (Slide-in Drawer)**: Em celulares, a barra de navegação fica oculta e pode ser aberta a partir do menu hamburguer (`☰`) no cabeçalho. Ela fecha de forma inteligente ao clicar fora ou navegar para outra tela.
+* **Tabelas Adaptativas**: Em telas pequenas, as colunas menos importantes das tabelas de alunos e professores (como CPF e e-mail) são ocultadas progressivamente para evitar poluição visual. Todas as tabelas possuem scroll horizontal seguro para visualização completa por arraste.
+* **Prevenção de Zoom no iOS**: Os campos de formulários em aparelhos Apple são configurados com tamanhos de fonte otimizados para evitar que o Safari force zooms incômodos e quebras de layout.
 
 ---
 
