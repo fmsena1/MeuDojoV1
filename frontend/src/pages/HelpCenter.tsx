@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   BookOpen, Search, ChevronRight, X,
   Building2, Users, GraduationCap, Target, Calendar,
@@ -46,25 +46,6 @@ const sections: HelpSection[] = [
           { src: '/help-screenshots/cadastro_submetido_1784589589797.png', alt: 'Cadastro Confirmado', caption: 'Academia criada com sucesso' },
           { src: '/help-screenshots/dashboard_1784589597047.png', alt: 'Dashboard', caption: 'Dashboard apos o primeiro login' },
         ]
-      },
-    ]
-  },
-  {
-    id: 'gestao-membros',
-    emoji: '👥',
-    icon: Users,
-    title: 'Gestao de Membros',
-    description: 'Configure os perfis de acesso de quem usa o sistema.',
-    steps: [
-      {
-        text: 'Acesse o menu lateral e clique em Gestao de Membros. Nesta tela, o administrador pode registrar novos usuarios para a academia, definindo o e-mail, senha e o respectivo Perfil de Acesso (Role).',
-        screenshots: [
-          { src: '/help-screenshots/login_1784589556917.png', alt: 'Tela de Login', caption: 'Tela de login do sistema' },
-        ]
-      },
-      {
-        title: 'Perfis de Acesso:',
-        text: '• Administrador (ADMIN): Acesso total a todas as configuracoes, cadastros, chamadas e relatorios.\n• Professor (TEACHER): Pode visualizar turmas, alunos e realizar a chamada das suas respectivas aulas.\n• Recepcionista (RECEPTIONIST): Acesso operacional para gerenciar cadastros de alunos, professores, turmas e realizar chamadas.\n• Aluno (STUDENT): Acesso limitado para verificar seu proprio historico de presenças e pagamentos.',
       },
     ]
   },
@@ -231,6 +212,78 @@ const sections: HelpSection[] = [
   },
 ];
 
+// ─── Componente de Screenshot com Loading Skeleton ──────────────────────────
+const ScreenshotCard: React.FC<{
+  ss: Screenshot;
+  sectionId: string;
+  stepIdx: number;
+  ssIdx: number;
+  onOpen: (ss: Screenshot) => void;
+}> = ({ ss, sectionId, stepIdx, ssIdx, onOpen }) => {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  const handleLoad = useCallback(() => setLoaded(true), []);
+  const handleError = useCallback(() => { setLoaded(true); setError(true); }, []);
+
+  return (
+    <button
+      id={`help-screenshot-${sectionId}-${stepIdx}-${ssIdx}`}
+      onClick={() => !error && onOpen(ss)}
+      className={`group relative overflow-hidden rounded-xl border border-zinc-700/60 bg-zinc-800/40 transition-all duration-200 text-left ${
+        error ? 'cursor-default' : 'hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-500/10 hover:scale-[1.02]'
+      }`}
+      aria-label={`Ampliar: ${ss.caption}`}
+    >
+      {/* Skeleton shimmer — visível enquanto a imagem carrega */}
+      {!loaded && (
+        <div className="flex h-44 w-full flex-col gap-2 p-3 animate-pulse">
+          <div className="h-full w-full rounded-lg bg-zinc-700/60" />
+          <div className="h-3 w-2/3 rounded bg-zinc-700/60" />
+        </div>
+      )}
+
+      {/* Container da imagem — oculto até carregar */}
+      <div
+        className={`overflow-hidden transition-opacity duration-500 ${
+          loaded ? 'opacity-100' : 'opacity-0 absolute inset-0'
+        }`}
+        style={{ maxHeight: '180px' }}
+      >
+        {!error ? (
+          <img
+            src={ss.src}
+            alt={ss.alt}
+            className="w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+            onLoad={handleLoad}
+            onError={handleError}
+          />
+        ) : (
+          <div className="flex h-44 w-full items-center justify-center bg-zinc-800/60 text-xs text-zinc-500">
+            <span>Imagem indisponível</span>
+          </div>
+        )}
+      </div>
+
+      {/* Hover overlay — apenas quando carregada e sem erro */}
+      {loaded && !error && (
+        <div className="absolute inset-x-0 top-0 bottom-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <div className="rounded-full bg-black/50 backdrop-blur-sm px-3 py-1.5 text-xs text-white font-medium border border-white/20">
+            Ampliar imagem
+          </div>
+        </div>
+      )}
+
+      {/* Caption */}
+      {loaded && (
+        <div className="px-3 py-2 bg-zinc-800/80 border-t border-zinc-700/40">
+          <p className="text-xs text-zinc-400 truncate">{ss.caption}</p>
+        </div>
+      )}
+    </button>
+  );
+};
+
 const Lightbox: React.FC<{ src: string; alt: string; caption: string; onClose: () => void }> = ({ src, alt, caption, onClose }) => (
   <div
     className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4"
@@ -378,29 +431,14 @@ export const HelpCenter: React.FC = () => {
                       : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
                     }`}>
                       {step.screenshots.map((ss, ssIdx) => (
-                        <button
+                        <ScreenshotCard
                           key={ssIdx}
-                          id={`help-screenshot-${currentSection.id}-${stepIdx}-${ssIdx}`}
-                          onClick={() => setLightbox(ss)}
-                          className="group relative overflow-hidden rounded-xl border border-zinc-700/60 bg-zinc-800/40 transition-all duration-200 hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-500/10 hover:scale-[1.02] text-left"
-                        >
-                          <div className="overflow-hidden" style={{ maxHeight: '180px' }}>
-                            <img
-                              src={ss.src}
-                              alt={ss.alt}
-                              className="w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                              loading="lazy"
-                            />
-                          </div>
-                          <div className="absolute inset-x-0 top-0 bottom-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                            <div className="rounded-full bg-black/50 backdrop-blur-sm px-3 py-1.5 text-xs text-white font-medium border border-white/20">
-                              Ampliar imagem
-                            </div>
-                          </div>
-                          <div className="px-3 py-2 bg-zinc-800/80 border-t border-zinc-700/40">
-                            <p className="text-xs text-zinc-400 truncate">{ss.caption}</p>
-                          </div>
-                        </button>
+                          ss={ss}
+                          sectionId={currentSection.id}
+                          stepIdx={stepIdx}
+                          ssIdx={ssIdx}
+                          onOpen={setLightbox}
+                        />
                       ))}
                     </div>
                   )}
