@@ -49,6 +49,27 @@ const sections: HelpSection[] = [
       },
     ]
   },
+  /* ── SEÇÃO COMENTADA: Gestão de Membros ─────────────────────────────────────
+  {
+    id: 'gestao-membros',
+    emoji: '👥',
+    icon: Users,
+    title: 'Gestao de Membros',
+    description: 'Configure os perfis de acesso de quem usa o sistema.',
+    steps: [
+      {
+        text: 'Acesse o menu lateral e clique em Gestao de Membros. Nesta tela, o administrador pode registrar novos usuarios para a academia, definindo o e-mail, senha e o respectivo Perfil de Acesso (Role).',
+        screenshots: [
+          { src: '/help-screenshots/login_1784589556917.png', alt: 'Tela de Login', caption: 'Tela de login do sistema' },
+        ]
+      },
+      {
+        title: 'Perfis de Acesso:',
+        text: '• Administrador (ADMIN): Acesso total a todas as configuracoes, cadastros, chamadas e relatorios.\n• Professor (TEACHER): Pode visualizar turmas, alunos e realizar a chamada das suas respectivas aulas.\n• Recepcionista (RECEPTIONIST): Acesso operacional para gerenciar cadastros de alunos, professores, turmas e realizar chamadas.\n• Aluno (STUDENT): Acesso limitado para verificar seu proprio historico de presenças e pagamentos.',
+      },
+    ]
+  },
+  ─────────────────────────────────────────────────────────────────────────── */
   {
     id: 'alunos-professores',
     emoji: '🎓',
