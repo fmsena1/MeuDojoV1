@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
   BookOpen, Search, ChevronRight, X,
-  Building2, Users, GraduationCap, Target, Calendar,
+  Building2, GraduationCap, Target, Calendar,
   ClipboardCheck, DollarSign, Smartphone, RefreshCw, HelpCircle
 } from 'lucide-react';
 
